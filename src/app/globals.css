@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+:root {
+  --canvas: #f6f8f8;
+  --surface: #ffffff;
+  --surface-muted: #eef3f2;
+  --border: #dde5e3;
+  --border-strong: #c3d0cd;
+
+  --text-primary: #10201d;
+  --text-secondary: #47615c;
+  --text-muted: #7f948f;
+  --text-on-brand: #f4faf9;
+
+  --brand: #0f6e64;
+  --brand-dark: #0a4f48;
+  --brand-light: #e2f2ef;
+  --brand-ring: #0f6e6433;
+
+  --severity-contraindicated: #b91c1c;
+  --severity-contraindicated-bg: #fef2f2;
+  --severity-contraindicated-border: #fecaca;
+
+  --severity-major: #c2410c;
+  --severity-major-bg: #fff7ed;
+  --severity-major-border: #fed7aa;
+
+  --severity-moderate: #a16207;
+  --severity-moderate-bg: #fefce8;
+  --severity-moderate-border: #fde68a;
+
+  --severity-minor: #1d4ed8;
+  --severity-minor-bg: #eff6ff;
+  --severity-minor-border: #bfdbfe;
+
+  --success: #15803d;
+  --success-bg: #f0fdf4;
+  --danger: #b91c1c;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-on-brand: var(--text-on-brand);
+
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-light: var(--brand-light);
+
+  --color-severity-contraindicated: var(--severity-contraindicated);
+  --color-severity-contraindicated-bg: var(--severity-contraindicated-bg);
+  --color-severity-contraindicated-border: var(--severity-contraindicated-border);
+
+  --color-severity-major: var(--severity-major);
+  --color-severity-major-bg: var(--severity-major-bg);
+  --color-severity-major-border: var(--severity-major-border);
+
+  --color-severity-moderate: var(--severity-moderate);
+  --color-severity-moderate-bg: var(--severity-moderate-bg);
+  --color-severity-moderate-border: var(--severity-moderate-border);
+
+  --color-severity-minor: var(--severity-minor);
+  --color-severity-minor-bg: var(--severity-minor-bg);
+  --color-severity-minor-border: var(--severity-minor-border);
+
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-danger: var(--danger);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--canvas);
+  color: var(--text-primary);
+}
+
+* {
+  border-color: var(--border);
+}
+
+::selection {
+  background: var(--brand-light);
+  color: var(--brand-dark);
+}
+
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-toast-in {
+  animation: toast-in 160ms ease-out;
+}
