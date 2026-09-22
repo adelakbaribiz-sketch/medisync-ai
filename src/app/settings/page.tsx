@@ -3,6 +3,7 @@
 import { ReactNode, useState } from "react";
 import { Topbar } from "@/components/layout/Topbar";
 import { useMedicationList, usePatientProfile, useToast } from "@/state/app-state";
+import { Surface } from "@/components/ui/Surface";
 
 function Toggle({
   checked,
@@ -64,7 +65,7 @@ export default function SettingsPage() {
     <>
       <Topbar title="Settings" description="Workspace preferences for this demo session." />
       <main className="flex-1 space-y-6 px-4 py-6 sm:px-6">
-        <section className="rounded-xl border border-border bg-surface p-5">
+        <Surface as="section" className="p-5">
           <h2 className="text-sm font-semibold text-text-primary">Notifications</h2>
           <div className="divide-y divide-border">
             <SettingsRow
@@ -78,9 +79,9 @@ export default function SettingsPage() {
               control={<Toggle checked={voiceAlerts} onChange={setVoiceAlerts} />}
             />
           </div>
-        </section>
+        </Surface>
 
-        <section className="rounded-xl border border-border bg-surface p-5">
+        <Surface as="section" className="p-5">
           <h2 className="text-sm font-semibold text-text-primary">Data sources</h2>
           <p className="mt-1 text-sm text-text-secondary">
             In a production deployment these would be live connections. In this
@@ -104,9 +105,9 @@ export default function SettingsPage() {
               control={<Toggle checked={false} onChange={() => {}} disabled />}
             />
           </div>
-        </section>
+        </Surface>
 
-        <section className="rounded-xl border border-border bg-surface p-5">
+        <Surface as="section" className="p-5">
           <h2 className="text-sm font-semibold text-text-primary">Language</h2>
           <select
             disabled
@@ -115,7 +116,7 @@ export default function SettingsPage() {
             <option>English (default)</option>
             <option>Additional languages — planned, see ROADMAP.md</option>
           </select>
-        </section>
+        </Surface>
 
         <section className="rounded-xl border border-severity-contraindicated-border bg-surface p-5">
           <h2 className="text-sm font-semibold text-text-primary">Reset demo session</h2>

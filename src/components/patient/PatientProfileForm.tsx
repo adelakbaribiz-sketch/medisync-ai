@@ -1,8 +1,9 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { FormEvent, ReactNode, useState } from "react";
 import { usePatientProfile, useToast } from "@/state/app-state";
 import { HepaticImpairment } from "@/lib/types";
+import { Surface } from "@/components/ui/Surface";
 
 const hepaticOptions: { value: HepaticImpairment; label: string }[] = [
   { value: "none", label: "None" },
@@ -34,12 +35,13 @@ export function PatientProfileForm() {
   }
 
   return (
-    <form
-      onSubmit={(e) => {
+    <Surface
+      as="form"
+      onSubmit={(e: FormEvent) => {
         e.preventDefault();
         pushToast("Patient profile saved for this session.", "success");
       }}
-      className="space-y-6 rounded-xl border border-border bg-surface p-5"
+      className="space-y-6 p-5"
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Age (years)">
@@ -184,7 +186,7 @@ export function PatientProfileForm() {
           Reset
         </button>
       </div>
-    </form>
+    </Surface>
   );
 }
 

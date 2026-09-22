@@ -1,7 +1,8 @@
 "use client";
 
 import { Drug, DrugInteraction } from "@/lib/types";
-import { severityClasses } from "@/lib/severity";
+import { severityClasses, severityLabel } from "@/lib/severity";
+import { Surface } from "@/components/ui/Surface";
 
 const severityStroke: Record<string, string> = {
   contraindicated: "var(--severity-contraindicated)",
@@ -38,7 +39,7 @@ export function InteractionGraph({ drugs, interactions }: Props) {
   });
 
   return (
-    <div className="rounded-xl border border-border bg-surface p-4">
+    <Surface level="elevated" className="p-4">
       <svg
         viewBox={`0 0 ${SIZE} ${SIZE}`}
         className="mx-auto h-auto w-full max-w-md"
@@ -110,11 +111,13 @@ export function InteractionGraph({ drugs, interactions }: Props) {
                 className="h-2 w-2 rounded-full"
                 style={{ backgroundColor: severityStroke[level] }}
               />
-              <span className={severityClasses[level].text}>{level}</span>
+              <span className={severityClasses[level].text}>
+                {severityLabel[level]}
+              </span>
             </div>
           )
         )}
       </div>
-    </div>
+    </Surface>
   );
 }

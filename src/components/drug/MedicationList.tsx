@@ -4,6 +4,7 @@ import { useMedicationList } from "@/state/app-state";
 import { IconTrash } from "@/components/ui/icons";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { IconPatient } from "@/components/ui/icons";
+import { Surface } from "@/components/ui/Surface";
 
 export function MedicationList() {
   const { medications, removeDrug, isLoaded } = useMedicationList();
@@ -19,7 +20,7 @@ export function MedicationList() {
   }
 
   return (
-    <ul className="divide-y divide-border rounded-xl border border-border bg-surface">
+    <Surface as="ul" className="divide-y divide-border">
       {medications.map((drug) => (
         <li
           key={drug.rxcui}
@@ -40,6 +41,6 @@ export function MedicationList() {
           </button>
         </li>
       ))}
-    </ul>
+    </Surface>
   );
 }

@@ -13,6 +13,7 @@ import { useInteractions } from "@/lib/hooks/useInteractions";
 import { sortBySeverity } from "@/lib/severity";
 import { demoDataDisclaimer } from "@/lib/mock-data";
 import { IconAlert } from "@/components/ui/icons";
+import { Surface } from "@/components/ui/Surface";
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -42,7 +43,7 @@ export default function DashboardPage() {
           {demoDataDisclaimer}
         </div>
 
-        <div className="rounded-xl border border-border bg-surface p-5">
+        <Surface className="p-5">
           <h2 className="mb-3 text-sm font-semibold text-text-primary">
             Current medication list
           </h2>
@@ -50,7 +51,7 @@ export default function DashboardPage() {
           <div className="mt-4">
             <MedicationList />
           </div>
-        </div>
+        </Surface>
 
         {status === "error" ? (
           <div className="rounded-xl border border-severity-contraindicated-border bg-severity-contraindicated-bg p-6">
@@ -104,9 +105,10 @@ export default function DashboardPage() {
                       const a = medications.find((d) => d.rxcui === interaction.drugA);
                       const b = medications.find((d) => d.rxcui === interaction.drugB);
                       return (
-                        <li
+                        <Surface
+                          as="li"
                           key={interaction.id}
-                          className="rounded-xl border border-border bg-surface p-4"
+                          className="p-4"
                         >
                           <div className="flex items-center justify-between gap-3">
                             <p className="font-medium text-text-primary">
@@ -117,7 +119,7 @@ export default function DashboardPage() {
                           <p className="mt-1.5 text-sm text-text-secondary">
                             {interaction.clinicalEffect}
                           </p>
-                        </li>
+                        </Surface>
                       );
                     })}
                     <Link

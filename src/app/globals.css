@@ -36,6 +36,17 @@
   --success: #15803d;
   --success-bg: #f0fdf4;
   --danger: #b91c1c;
+
+  /* Elevation base color: soft brand-tinted shadow, not generic flat grey.
+     The actual --shadow-* tokens live in @theme inline below, since that's
+     Tailwind v4's real namespace for the shadow-sm/md/lg/xl utilities — a
+     second same-named declaration here would self-reference and break. See
+     docs/DECISIONS.md and docs/UPGRADE-REPORT.md. */
+  --shadow-color: 10, 79, 72;
+
+  --motion-fast: 140ms;
+  --motion-base: 220ms;
+  --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 @theme inline {
@@ -76,6 +87,18 @@
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Override Tailwind's default flat-grey shadow scale with brand-tinted,
+     layered elevation — one deliberate depth system instead of decoration
+     on every card (used only on the Dashboard's KPI cards and hero graph
+     panel; tables and forms stay flat and fast — see UPGRADE-REPORT.md). */
+  --shadow-sm: 0 1px 2px rgba(var(--shadow-color), 0.06);
+  --shadow-md: 0 6px 16px -4px rgba(var(--shadow-color), 0.12),
+    0 2px 6px -2px rgba(var(--shadow-color), 0.06);
+  --shadow-lg: 0 16px 32px -8px rgba(var(--shadow-color), 0.16),
+    0 4px 10px -4px rgba(var(--shadow-color), 0.08);
+  --shadow-xl: 0 24px 48px -12px rgba(var(--shadow-color), 0.22),
+    0 8px 16px -8px rgba(var(--shadow-color), 0.1);
 }
 
 body {
@@ -112,4 +135,27 @@ body {
 }
 .animate-toast-in {
   animation: toast-in 160ms ease-out;
+}
+
+/* Depth-lift: the one hover motion pattern in the app, reserved for the
+   Dashboard's KPI cards and hero graph panel (see Surface.tsx). Not applied
+   to tables, forms, or list rows — those stay flat and fast. */
+.lift-on-hover {
+  transition: transform var(--motion-base) var(--motion-ease),
+    box-shadow var(--motion-base) var(--motion-ease);
+}
+.lift-on-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lift-on-hover,
+  .animate-toast-in {
+    animation: none !important;
+    transition: none !important;
+  }
+  .lift-on-hover:hover {
+    transform: none;
+  }
 }

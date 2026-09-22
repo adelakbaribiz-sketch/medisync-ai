@@ -7,6 +7,8 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { IconEvidence, IconSearch, IconExternalLink } from "@/components/ui/icons";
 import { drugs, interactions, demoDataDisclaimer } from "@/lib/mock-data";
 import { sortBySeverity } from "@/lib/severity";
+import { Surface } from "@/components/ui/Surface";
+import { EvidenceStrengthBadge } from "@/components/ui/EvidenceStrengthBadge";
 
 function drugName(rxcui: string) {
   return drugs.find((d) => d.rxcui === rxcui)?.name ?? rxcui;
@@ -64,10 +66,7 @@ export default function EvidencePage() {
         ) : (
           <div className="space-y-3">
             {filtered.map((interaction) => (
-              <div
-                key={interaction.id}
-                className="rounded-xl border border-border bg-surface p-4"
-              >
+              <Surface key={interaction.id} className="p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="font-medium text-text-primary">
                     {drugName(interaction.drugA)} + {drugName(interaction.drugB)}
@@ -86,15 +85,13 @@ export default function EvidencePage() {
                         <span className="font-medium text-text-primary">
                           {ev.sourceType}
                         </span>{" "}
-                        <span className="text-xs text-text-muted">
-                          ({ev.strength})
-                        </span>{" "}
+                        <EvidenceStrengthBadge strength={ev.strength} />{" "}
                         — {ev.summary}
                       </span>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </Surface>
             ))}
           </div>
         )}

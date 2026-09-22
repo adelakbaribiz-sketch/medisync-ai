@@ -7,6 +7,8 @@ import { SeverityBadge } from "@/components/ui/SeverityBadge";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { IconAlert, IconExternalLink } from "@/components/ui/icons";
 import { adjustedSeverityNote } from "@/lib/api";
+import { Surface } from "@/components/ui/Surface";
+import { EvidenceStrengthBadge } from "@/components/ui/EvidenceStrengthBadge";
 
 const ALL_SEVERITIES: SeverityLevel[] = [
   "contraindicated",
@@ -83,7 +85,7 @@ export function InteractionTable({
           }
         />
       ) : (
-        <div className="overflow-hidden rounded-xl border border-border bg-surface">
+        <Surface className="overflow-hidden">
           <table className="w-full text-left text-sm">
             <thead className="border-b border-border bg-surface-muted text-xs uppercase tracking-wide text-text-muted">
               <tr>
@@ -181,7 +183,8 @@ export function InteractionTable({
                                       <span className="font-medium text-text-primary">
                                         {ev.sourceType}
                                       </span>{" "}
-                                      ({ev.strength}) — {ev.summary}
+                                      <EvidenceStrengthBadge strength={ev.strength} />{" "}
+                                      — {ev.summary}
                                     </span>
                                   </li>
                                 ))}
@@ -211,7 +214,7 @@ export function InteractionTable({
               })}
             </tbody>
           </table>
-        </div>
+        </Surface>
       )}
     </div>
   );
