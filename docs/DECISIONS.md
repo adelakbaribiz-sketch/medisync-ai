@@ -88,3 +88,29 @@ fired, is how real bugs get shipped. Two of the four flagged sites had an
 easy, better structure; two didn't, and forcing them into the "preferred"
 shape would have introduced a hydration bug to satisfy a linter. See the
 inline comments in `src/state/app-state.tsx`.
+
+## 8. A small, semantic depth system instead of decorating every card
+
+**Decision:** Added a brand-tinted elevation scale (`shadow-sm/md/lg/xl` in
+`globals.css`) and a shared `Surface` component with three levels
+(flat/elevated/floating), but only promoted two things to "elevated": the
+Dashboard's severity KPI cards and the interaction network graph panel.
+Tables, forms, list rows, and settings sections stay on `flat`.
+
+**Why:** The upgrade brief asked for a "premium, spatial, subtle 3D" look
+without turning the app into "a game," and explicitly warned against
+decorating every card with the same shadow (the generic "SaaS-card kit"
+look). Depth is used here to mark the two things on the Dashboard that are
+actually the page's focal points — not applied uniformly. See
+`docs/UPGRADE-REPORT.md` for the before/after reasoning in full.
+
+## 9. Evidence strength gets a visual trust cue, not a fake confidence score
+
+**Decision:** Added `EvidenceStrengthBadge` — a small solid/outlined/dashed
+chip for Established/Probable/Theoretical evidence — instead of a numeric
+"confidence %" some AI-product UIs use.
+
+**Why:** No model computed a probability for any of these interactions (see
+`LIMITATIONS.md`); a numeric confidence score would imply a precision that
+doesn't exist. A three-tier visual distinction communicates "how well
+documented is this" honestly, without fabricating quantitative certainty.

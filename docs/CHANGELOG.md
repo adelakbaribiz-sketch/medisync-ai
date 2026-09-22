@@ -2,6 +2,33 @@
 
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.2.0] — 2026-09-23
+
+Design/quality upgrade pass. Full before/after reasoning in
+[`UPGRADE-REPORT.md`](UPGRADE-REPORT.md).
+
+### Added
+
+- Brand-tinted elevation shadow scale and motion tokens in `globals.css`.
+- `Surface` component, consolidating a card-wrapper pattern that was
+  duplicated across 9 files.
+- `EvidenceStrengthBadge` — a visual trust-layer cue for evidence strength
+  (Established/Probable/Theoretical), replacing plain parenthetical text.
+- `prefers-reduced-motion` handling for the new hover-lift pattern.
+
+### Changed
+
+- Dashboard KPI cards and the interaction network graph panel promoted to
+  an "elevated" surface with a severity-colored top accent bar — the only
+  two surfaces given this treatment, deliberately (see `DECISIONS.md` #8).
+
+### Fixed
+
+- `InteractionGraph`'s severity legend was rendering raw lowercase keys
+  instead of the proper-case `severityLabel` text.
+- Replaced a non-null assertion in `InteractionGraph` with an explicit
+  guard, matching the defensive pattern already used a few lines above.
+
 ## [0.1.0] — 2026-09-22
 
 Initial portfolio prototype, built from the original Persian-language

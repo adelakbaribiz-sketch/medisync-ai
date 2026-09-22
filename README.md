@@ -153,6 +153,7 @@ Read before evaluating or extending this project:
 | [`docs/HONEST_STATUS.md`](docs/HONEST_STATUS.md) | Every component classified REAL/MOCKED/SIMULATED/PROPOSED/NOT IMPLEMENTED |
 | [`docs/PORTFOLIO_CASE_STUDY.md`](docs/PORTFOLIO_CASE_STUDY.md) | What I built, why, and how — portfolio framing |
 | [`docs/CHANGELOG.md`](docs/CHANGELOG.md) | Version history |
+| [`docs/UPGRADE-REPORT.md`](docs/UPGRADE-REPORT.md) | Before/after report from the post-launch design/quality upgrade pass |
 | [`docs/ORIGINAL_DOSSIER_FA.md`](docs/ORIGINAL_DOSSIER_FA.md) | Original Persian-language technical dossier this project started from |
 
 ---
