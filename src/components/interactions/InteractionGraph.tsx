@@ -67,7 +67,8 @@ export function InteractionGraph({ drugs, interactions }: Props) {
         })}
 
         {drugs.map((drug) => {
-          const pos = positions.get(drug.rxcui)!;
+          const pos = positions.get(drug.rxcui);
+          if (!pos) return null;
           return (
             <g key={drug.rxcui}>
               <circle
