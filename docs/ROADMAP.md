@@ -50,10 +50,15 @@ guesses (§10), not commitments.
 These don't require any external dependency and could reasonably be picked
 up next if this project continues as a portfolio piece:
 
-- Automated component/unit tests (see `TESTING.md` for current manual-only
-  status).
+- Component-level (React Testing Library style) unit tests — the current
+  suite is pure-logic unit tests plus full e2e flows (see `TESTING.md`),
+  with nothing in between yet.
+- Visual regression / screenshot-diff testing.
 - Persist the "simulate error" demo toggle's UI state more visibly (it
   currently resets on reload, which is correct behavior but easy to miss).
 - Expand the demo dataset beyond 18 drugs / 17 interactions if broader
   coverage would strengthen the demo.
-- Dark mode (explicitly deferred — see `DECISIONS.md`).
+- ~~Dark mode~~ — done in round 2 (see `DECISIONS.md` #10, `CHANGELOG.md`
+  0.3.0).
+- ~~Automated UI/e2e test coverage~~ — done in round 2 (`e2e/`,
+  `DECISIONS.md` #11).

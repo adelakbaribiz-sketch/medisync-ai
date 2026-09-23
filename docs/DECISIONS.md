@@ -114,3 +114,36 @@ chip for Established/Probable/Theoretical evidence — instead of a numeric
 `LIMITATIONS.md`); a numeric confidence score would imply a precision that
 doesn't exist. A three-tier visual distinction communicates "how well
 documented is this" honestly, without fabricating quantitative certainty.
+
+## 10. Dark mode: a separately-designed palette, one toggle, no duplication
+
+**Decision:** Implemented light/dark/system theming for real this round
+(superseding decision #5's deferral). Dark tokens are their own palette
+(`.dark` overrides in `globals.css`), not an inverted light theme — canvas,
+surface, and border neutrals were re-picked for a dark background, and every
+severity color (contraindicated/major/moderate/minor) was independently
+tuned for legibility and contrast on dark, not just lightened/darkened by a
+formula. One control (`ThemeToggle` in the sidebar footer, visible on every
+page) drives a single `ThemeProvider`, rather than a duplicate control also
+living in Settings — see `docs/DECISIONS.md`'s own `#4`-style precedent of
+preferring one component over duplicated state.
+
+**Why:** Decision #5 explicitly said a half-tested dark mode would hurt more
+than no dark mode. This round had time to actually design and verify it
+(manually in-browser across Dashboard/Interactions/Evidence, and via the new
+e2e `theme.spec.ts`) rather than repeat that risk.
+
+## 11. Automated e2e coverage via `@playwright/test`, not the ad-hoc Python skill
+
+**Decision:** Added a committed TypeScript Playwright suite (`e2e/`,
+`playwright.config.ts`, `npm run test:e2e`) rather than only doing one-off
+manual verification.
+
+**Why:** `HONEST_STATUS.md` explicitly flagged automated UI/e2e coverage as
+`NOT IMPLEMENTED` — a real, named gap from round 1, not a hypothetical one.
+`@playwright/test` matches the project's existing stack (npm scripts,
+TypeScript, Vitest for unit tests) so it's one more `npm run` command for a
+future contributor, not a second toolchain. The suite found a genuine bug on
+its first real run — see `docs/UPGRADE-REPORT.md`'s Round 2 section — which
+is itself the argument for why this gap was worth closing rather than
+re-deferring again.

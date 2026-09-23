@@ -2,6 +2,41 @@
 
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.3.0] — 2026-09-23
+
+Second upgrade pass (round 2), by a session that first re-verified round
+1's own report against the actual code (`project-takeover`). Full
+before/after reasoning in [`UPGRADE-REPORT.md`](UPGRADE-REPORT.md)'s
+"Round 2" section.
+
+### Added
+
+- Light/dark/system theming: a separately-designed `.dark` token palette in
+  `globals.css` (not an inversion), `ThemeProvider`/`useTheme` in
+  `app-state.tsx`, and a single `ThemeToggle` control in the sidebar footer.
+  Persisted via `localStorage`, applied pre-hydration via an inline script
+  to avoid a flash of the wrong theme.
+- Playwright e2e suite (`e2e/`, `npm run test:e2e`): 9 tests covering
+  navigation, theme persistence, and the core medication/interaction flow.
+
+### Fixed
+
+- Dark mode's no-flash inline script compared a raw `localStorage` string
+  against an unquoted literal; the shared `writeStorage` helper JSON-encodes
+  every value, so the comparison silently never matched and the flash it
+  was built to prevent happened anyway on every reload for dark-mode users.
+  Found by the new e2e suite's reload test, not by manual testing or code
+  review. Fixed in `src/app/layout.tsx`.
+- One `react-hooks/set-state-in-effect` lint violation in the new
+  `ThemeProvider`, resolved by deriving `resolved` theme state instead of
+  setting it imperatively in an effect (see `DECISIONS.md` #10).
+
+### Changed
+
+- `docs/SECURITY.md` updated: the dark-mode script's one, reviewed,
+  justified `dangerouslySetInnerHTML` use replaces a now-inaccurate "none
+  found" claim.
+
 ## [0.2.0] — 2026-09-23
 
 Design/quality upgrade pass. Full before/after reasoning in

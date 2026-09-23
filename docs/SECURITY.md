@@ -2,7 +2,10 @@
 
 Reviewed 2026-09-22 against the current codebase (frontend-only prototype, no
 backend, no auth). Findings below are from an actual review of this
-repository, not a generic template.
+repository, not a generic template. Re-reviewed and updated in round 2 of
+the upgrade pass after the dark-mode change introduced this document's one
+`dangerouslySetInnerHTML` use — see that row below rather than a stale
+"none found" claim.
 
 ## Scope note
 
@@ -16,8 +19,8 @@ this document says so explicitly rather than padding the list.
 | Category | Finding | Status |
 |---|---|---|
 | Secrets in repo | `grep`-checked source for API keys, tokens, passwords, `Bearer` strings — none found. `.env.example` documents planned variables only; no `.env` file is committed (blocked by `.gitignore`). | ✅ Clean |
-| Dependency vulnerabilities | `npm audit` (full and prod-only): 0 vulnerabilities across 359 packages at time of review. | ✅ Clean |
-| XSS / `dangerouslySetInnerHTML` | Grepped for `dangerouslySetInnerHTML`, `eval(`, `document.write`, `innerHTML` — none found anywhere in `src/`. All rendered text goes through JSX's default escaping. | ✅ Clean |
+| Dependency vulnerabilities | `npm audit`: 0 vulnerabilities, re-verified round 2 after adding `@playwright/test` as a dev dependency (dev-only; not shipped in the production build). | ✅ Clean |
+| XSS / `dangerouslySetInnerHTML` | One use exists: `src/app/layout.tsx`'s theme-init script (prevents a dark-mode flash on load, the same pattern every `next-themes`-style library uses). Reviewed: the injected string is a **static literal authored in this file**, contains no interpolated request/user/external data of any kind, and only reads `localStorage`/`matchMedia` and toggles a class — there is no code path by which untrusted input reaches this string. Grepped for `eval(`, `document.write`, `innerHTML` assignment — none found. All other rendered text goes through JSX's default escaping. | ✅ Reviewed, safe (see note) |
 | Injection (SQL/NoSQL/command) | No database, no server-executed queries, no shell execution from user input. Not applicable. | N/A |
 | Authentication / Authorization | None implemented. There is nothing to authenticate into — no user accounts, no per-user server data. The Settings page's toggles are cosmetic/local only. **This must change before any real patient data is handled** — see below. | ⚠️ By design for this prototype, not production-ready |
 | Sensitive data handling | The only persisted data is the demo medication list and patient profile, stored in the browser's own `localStorage`, never transmitted anywhere. No PII is collected. The patient profile fields (age, weight, eGFR, pregnancy, allergies) are realistic in *shape* but are the user's own test input, not real patient records — reinforced by UI copy ("Stored only in this browser"). | ✅ Consistent with a client-only demo |

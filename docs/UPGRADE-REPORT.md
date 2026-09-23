@@ -68,10 +68,70 @@ See `.claude/UPGRADE-SKILLS-USED.md`.
 2. `004b0b6` — `quality: replace non-null assertion with an explicit guard`
 3. (this commit) — `docs: upgrade report and decisions log`
 
-## Final status
+## Final status (round 1)
 
 **READY FOR NEXT PASS.** Build/lint/test/audit all clean; the visual upgrade
 is scoped, verified in-browser at desktop and mobile widths, and documented.
 Real remaining gaps (no automated UI tests, no dark mode, no live data) are
 unchanged from before this pass and are tracked in `LIMITATIONS.md` and
 `ROADMAP.md`, not newly introduced by it.
+
+---
+
+# Round 2
+
+Applied by a different session with no prior context of its own — see
+`.claude/UPGRADE-SKILLS-USED.md`'s round 2 section for how that was handled
+(`project-takeover` first, to verify round 1's own report against the actual
+code and a real build/lint/test run rather than trusting it).
+
+**Scope:** round 1 already closed most available value for this size of
+project; re-running the full brief end-to-end would have been busywork
+against its own "maximum value / minimum token" principle. This pass targets
+exactly the two gaps round 1 named explicitly as deferred/missing: dark mode
+and automated UI/e2e coverage. Everything round 1 marked N/A (backend,
+database, DevOps) is still N/A and unchanged.
+
+## Before/After
+
+| Category | Before | After | Why | Impact | Risk |
+|---|---|---|---|---|---|
+| **Design System / Dark Mode** | Light theme only (decision #5: deferred, not half-tested) | Real `.dark` palette in `globals.css` — separately tuned neutrals, brand, and all four severity colors for a dark canvas, not an inversion formula | Explicitly requested by the brief (§20) and explicitly named as the reason-to-revisit in decision #5 | Every existing component (severity cards, evidence badges, tables, graph) works in dark mode with zero component-code changes, because round 1's token system routed all color through CSS custom properties | Low — pure CSS addition; verified in-browser (desktop + mobile, all 5 pages) |
+| **Theme control** | N/A | One `ThemeToggle` (light → dark → system cycle) in the sidebar footer, one `ThemeProvider`, persisted via the same `localStorage` pattern the app already uses for medication list/patient profile | Single source of truth over adding a second control in Settings — see `DECISIONS.md` #10 | One click from any page, no navigation required | Low |
+| **Testing** | 21 unit tests, 0 e2e | Same 21 unit tests + **9 new Playwright e2e tests** (`npm run test:e2e`) covering navigation, theme persistence, and the core add-drug→see-interaction→clear-data flow | `HONEST_STATUS.md` named this gap explicitly | Closed a named, real gap — not speculative coverage | Low — additive; found and fixed a real bug (next row) rather than just adding green checkmarks |
+| **Code Quality** | — | **Found and fixed a real bug**: the dark-mode no-flash inline script compared a raw `localStorage` string against an unquoted literal, but the shared `writeStorage` helper JSON-encodes every value (needed for the other providers' objects) — so the comparison silently never matched, and the class was only applied post-hydration by React. Net effect: the exact flash the script exists to prevent would have happened for every returning dark-mode user. | Script now `JSON.parse`s the stored value | Caught by the new e2e suite's reload test on its first real run — not by code review or manual click-through, both of which had already "passed" | Fixes a real, user-visible regression introduced in this same pass, before it shipped | None — verified fixed via the same test, 3x repeat run to rule out flakiness before concluding it was a real bug |
+| **Security** | 0 vulnerabilities, no `dangerouslySetInnerHTML` anywhere | Re-reviewed: 0 vulnerabilities (incl. new dev-only Playwright dependency); one new, reviewed, justified `dangerouslySetInnerHTML` use for the theme script (static literal, no external data reaches it) — `SECURITY.md` updated rather than left stating a now-false "none found" | The brief requires a security pass after changes, and a stale claim is worse than an updated one | `SECURITY.md` accurately reflects the current codebase again | None — reviewed, not just re-run |
+| **Accessibility** | Focus rings, semantic HTML, `aria-checked` toggle, `prefers-reduced-motion` handling | + theme toggle has a descriptive `aria-label` reflecting current state; dark mode re-tuned severity colors were checked for contrast against the dark canvas, not just carried over at the same lightness | New interactive element and new color values both need their own accessibility check, not inherited from the light-mode review | Theme control is screen-reader-legible; severity meaning stays visually distinguishable in dark mode | None |
+| Everything else (Architecture, Backend, Database, Frontend structure, DevOps) | Unchanged | Unchanged | Already correctly scoped as N/A or already-healthy in round 1; re-touching them would violate the brief's own "don't rewrite healthy code" rule | — | None (no change) |
+
+## What was deliberately NOT done (round 2)
+
+- **No second theme control in Settings** — one control, one source of truth; see `DECISIONS.md` #10.
+- **No `frontend-design` skill consultation before designing the dark palette** — a real process gap versus round 1; logged honestly in `.claude/UPGRADE-SKILLS-USED.md` rather than omitted, even though the resulting palette was still bespoke (not a generic invert) and was verified adequate by manual + e2e checks.
+- **No CI pipeline added** to run the new e2e suite automatically — still no deployment target to justify it (unchanged from round 1's DevOps N/A).
+- **No visual-regression/screenshot-diff tooling** — flagged as a real remaining gap in `TESTING.md`, not attempted.
+- **No component-level unit tests** (React Testing Library-style) — the new coverage is either pure-logic (existing) or full e2e (new); that gap is named, not hidden.
+
+## Verification performed (round 2)
+
+- `npm test` — ✅ 21/21 passing (unchanged suite, re-run after every change group).
+- `npm run lint` — ✅ 0 errors (one real `react-hooks/set-state-in-effect` finding during development, fixed by restructuring — not suppressed — see `DECISIONS.md` #10's implementation).
+- `npm run build` — ✅ clean, all 6 routes.
+- `npm run test:e2e` — ✅ 9/9 passing, after finding and fixing the bug described above (confirmed non-flaky via a 3x isolated repeat run before treating it as a real bug rather than test noise).
+- `npm audit` — ✅ 0 vulnerabilities.
+- Manual in-browser verification: light → dark → system cycling on Dashboard, Evidence Library, and mobile width (375px); added two real interacting drugs (Simvastatin + Clarithromycin) and confirmed the contraindicated interaction, KPI card, graph node, and evidence citation all render correctly in dark mode; confirmed dark-mode persistence survives a hard reload with no flash. Console checked for errors throughout: none.
+
+## Commits this pass
+
+See `git log` — grouped as: theme tokens + provider + toggle, e2e suite +
+bugfix, documentation. Isolated per the brief's own change-grouping
+instruction rather than one large commit.
+
+## Final status (round 2)
+
+**READY FOR NEXT PASS.** Both gaps round 1 named explicitly (dark mode,
+automated UI coverage) are now real and verified, not just claimed. The e2e
+suite proved its own value by catching a genuine bug before it shipped.
+Remaining real gaps (visual regression testing, component-level unit tests,
+no CI, no live data/backend) are named in `LIMITATIONS.md`/`ROADMAP.md`/
+`TESTING.md`, not newly introduced and not hidden.

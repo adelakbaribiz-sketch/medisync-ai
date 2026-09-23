@@ -15,8 +15,9 @@ trust to place in something here.
 | Patient-context severity adjustment | **SIMULATED** | Transparent, hand-written rules (renal/hepatic/pregnancy). Not a validated clinical scoring model. |
 | "Backend API" (`src/lib/api.ts`) | **SIMULATED** | Real async functions with real latency/error paths, but resolving against in-memory static data — no network call, no server. |
 | Automated unit test suite (21 tests) | **REAL / IMPLEMENTED** | Actually runs, actually passes, covers pure logic and dataset integrity. See `TESTING.md`. |
-| Automated UI/e2e test suite | **NOT IMPLEMENTED** | Does not exist. |
-| `npm run build` / `npm run lint` / `npm audit` clean | **REAL / VERIFIED** | Actually run for this delivery; results reported in `TESTING.md` and `SECURITY.md`, not asserted from memory. |
+| Automated UI/e2e test suite | **REAL / IMPLEMENTED** | 9 Playwright tests (navigation, theme, core medication/interaction flow) — actually run, actually pass. See `TESTING.md`. |
+| Light/dark theme | **REAL / IMPLEMENTED** | Separately-designed dark palette (not inverted), one toggle in the sidebar, persisted via `localStorage`, verified manually and via `e2e/theme.spec.ts`. |
+| `npm run build` / `npm run lint` / `npm test` / `npm run test:e2e` / `npm audit` clean | **REAL / VERIFIED** | Actually run for this delivery; results reported in `TESTING.md` and `SECURITY.md`, not asserted from memory. |
 | GNN interaction-prediction model | **PROPOSED** | Documented architecture only; no model, no training run, no data. |
 | Fine-tuned local LLM explanation engine | **PROPOSED** | Documented architecture only; not built. |
 | RAG evidence pipeline (pgvector/hybrid search) | **PROPOSED** | Documented architecture only; not built. |
