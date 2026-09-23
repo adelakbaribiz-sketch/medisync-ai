@@ -49,6 +49,57 @@
   --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* Dark theme — a real, separately-designed palette, not an inverted light
+   theme. Every component reads colors through the tokens above via
+   `@theme inline`, so overriding the raw custom properties here is enough;
+   no component markup changes. Severity hues keep the same semantic mapping
+   (red/orange/amber/blue) but are re-tuned for a dark canvas: brighter base
+   colors for legible text, dark tinted (not pale) backgrounds, mid-tone
+   borders. `--brand-dark` is used as *text* on the `--brand-light` wash
+   (nav active state, badges) — in dark mode that wash is a low-luminance
+   teal, so `--brand-dark` is intentionally a *light* teal here to stay
+   readable; the token name describes its role (the "on brand-light" ink),
+   not a literal lightness constraint. See docs/DECISIONS.md #10. */
+.dark {
+  --canvas: #0a1615;
+  --surface: #0f201e;
+  --surface-muted: #16302c;
+  --border: #1f3b37;
+  --border-strong: #2c5450;
+
+  --text-primary: #eaf5f2;
+  --text-secondary: #a9c7c1;
+  --text-muted: #74928c;
+  --text-on-brand: #f4faf9;
+
+  --brand: #35b8a8;
+  --brand-dark: #86e6d7;
+  --brand-light: #123a35;
+  --brand-ring: #35b8a855;
+
+  --severity-contraindicated: #f87171;
+  --severity-contraindicated-bg: #2a1414;
+  --severity-contraindicated-border: #7f2b2b;
+
+  --severity-major: #fb923c;
+  --severity-major-bg: #2b1c0e;
+  --severity-major-border: #7c4a1a;
+
+  --severity-moderate: #facc15;
+  --severity-moderate-bg: #2a2410;
+  --severity-moderate-border: #6b5a17;
+
+  --severity-minor: #60a5fa;
+  --severity-minor-bg: #101f2e;
+  --severity-minor-border: #1e4173;
+
+  --success: #4ade80;
+  --success-bg: #12271a;
+  --danger: #f87171;
+
+  --shadow-color: 0, 0, 0;
+}
+
 @theme inline {
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);

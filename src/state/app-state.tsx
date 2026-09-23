@@ -13,6 +13,7 @@ import { Drug, PatientProfile, emptyPatientProfile } from "@/lib/types";
 
 const MEDICATION_LIST_KEY = "medisync_demo_medication_list";
 const PATIENT_PROFILE_KEY = "medisync_demo_patient_profile";
+const THEME_KEY = "medisync_demo_theme";
 
 function readStorage<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
@@ -160,6 +161,88 @@ export function usePatientProfile() {
 }
 
 // ---------------------------------------------------------------------------
+// Theme (light / dark / system)
+// ---------------------------------------------------------------------------
+
+export type ThemeMode = "light" | "dark" | "system";
+
+interface ThemeContextValue {
+  mode: ThemeMode;
+  resolved: "light" | "dark";
+  setMode: (mode: ThemeMode) => void;
+  cycleMode: () => void;
+}
+
+const ThemeContext = createContext<ThemeContextValue | null>(null);
+
+function systemPrefersDark() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
+}
+
+function applyThemeClass(resolved: "light" | "dark") {
+  document.documentElement.classList.toggle("dark", resolved === "dark");
+}
+
+const THEME_CYCLE: ThemeMode[] = ["light", "dark", "system"];
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  // Initial value matches the inline script in layout.tsx (see comment
+  // there) so the class the server-safe script already applied isn't
+  // fought with on hydration; this only re-derives the *mode* state, not
+  // the DOM class, which the script already set pre-paint.
+  const [mode, setModeState] = useState<ThemeMode>("system");
+  const [isLoaded, setIsLoaded] = useState(false);
+  // Subscription-only state: set exclusively from the matchMedia "change"
+  // callback below (a real external-system update), plus a lazy initializer
+  // for its current value — never set synchronously in an effect body.
+  // `resolved` itself is then a plain derived value, not stored state.
+  const [systemDark, setSystemDark] = useState(systemPrefersDark);
+  const resolved = mode === "system" ? (systemDark ? "dark" : "light") : mode;
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setModeState(readStorage<ThemeMode>(THEME_KEY, "system"));
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    applyThemeClass(resolved);
+    if (isLoaded) writeStorage(THEME_KEY, mode);
+  }, [resolved, mode, isLoaded]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => setSystemDark(media.matches);
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
+
+  const setMode = useCallback((next: ThemeMode) => setModeState(next), []);
+  const cycleMode = useCallback(() => {
+    setModeState((prev) => {
+      const idx = THEME_CYCLE.indexOf(prev);
+      return THEME_CYCLE[(idx + 1) % THEME_CYCLE.length];
+    });
+  }, []);
+
+  const value = useMemo(
+    () => ({ mode, resolved, setMode, cycleMode }),
+    [mode, resolved, setMode, cycleMode]
+  );
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+}
+
+export function useTheme() {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error("useTheme must be used within ThemeProvider");
+  return ctx;
+}
+
+// ---------------------------------------------------------------------------
 // Toast notifications
 // ---------------------------------------------------------------------------
 
@@ -217,10 +300,12 @@ export function useToast() {
 
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
-    <ToastProvider>
-      <MedicationListProvider>
-        <PatientProfileProvider>{children}</PatientProfileProvider>
-      </MedicationListProvider>
-    </ToastProvider>
+    <ThemeProvider>
+      <ToastProvider>
+        <MedicationListProvider>
+          <PatientProfileProvider>{children}</PatientProfileProvider>
+        </MedicationListProvider>
+      </ToastProvider>
+    </ThemeProvider>
   );
 }

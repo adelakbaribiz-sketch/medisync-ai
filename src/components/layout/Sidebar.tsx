@@ -10,6 +10,7 @@ import {
   IconSettings,
   IconClose,
 } from "@/components/ui/icons";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: IconDashboard },
@@ -60,6 +61,10 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           );
         })}
       </nav>
+
+      <div className="border-t border-border px-3 py-2">
+        <ThemeToggle />
+      </div>
 
       <div className="mx-3 mb-4 rounded-lg border border-border-strong bg-surface-muted p-3 text-xs text-text-secondary">
         <p className="font-medium text-text-primary">Prototype status</p>
