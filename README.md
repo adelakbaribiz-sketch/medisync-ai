@@ -59,12 +59,10 @@ touching the UI. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 | ![Patient profile form for age, weight, eGFR, hepatic impairment and allergies](docs/screenshots/patient-profile.png) |
 
 <p>
-  <img src="docs/screenshots/mobile.png" alt="Dashboard on a phone-sized screen" width="240">
-  &nbsp;
-  <img src="docs/screenshots/dashboard-dark.png" alt="Dashboard in dark theme" width="600">
+  <img src="docs/screenshots/mobile.png" alt="" width="260">
 </p>
 
-*Left: phone-sized screen (390 px wide). Right: dark theme.*
+*Phone-sized screen (390 px wide). Screenshots use the dark theme; the app also has a light theme.*
 
 *Captured from the prototype running locally, with five medications added from the demo catalog
 (warfarin, aspirin, simvastatin, clarithromycin, amiodarone). All interaction content is the curated
