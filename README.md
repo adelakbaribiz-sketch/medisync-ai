@@ -1,5 +1,7 @@
 # MediSync AI
 
+**Check a full medication list for drug–drug interactions and see the severity, mechanism, safer alternatives and evidence behind every flag.**
+
 An AI-assisted drug interaction and clinical decision support workspace —
 **portfolio prototype, demo data only.**
 
@@ -10,6 +12,8 @@ An AI-assisted drug interaction and clinical decision support workspace —
 > [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md) and
 > [`docs/HONEST_STATUS.md`](docs/HONEST_STATUS.md) for the full, explicit
 > breakdown of what's real vs. simulated vs. proposed.
+
+![Dashboard — medication list, severity summary, highest-priority interactions and interaction network](docs/screenshots/dashboard.png)
 
 ## Problem
 
@@ -46,8 +50,26 @@ touching the UI. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Screenshots
 
-No static screenshots are checked into this repo (they'd go stale). Run it
-locally — see **Demo** below — it takes under a minute.
+| Interaction analysis — mechanism, recommendation, alternatives, evidence | Evidence library |
+|---|---|
+| ![Interaction analysis with an expanded contraindicated pair](docs/screenshots/interaction-analysis.png) | ![Evidence library listing source type and strength per interaction](docs/screenshots/evidence-library.png) |
+
+| Patient profile (physiological context) |
+|---|
+| ![Patient profile form for age, weight, eGFR, hepatic impairment and allergies](docs/screenshots/patient-profile.png) |
+
+<p>
+  <img src="docs/screenshots/mobile.png" alt="Dashboard on a phone-sized screen" width="240">
+  &nbsp;
+  <img src="docs/screenshots/dashboard-dark.png" alt="Dashboard in dark theme" width="600">
+</p>
+
+*Left: phone-sized screen (390 px wide). Right: dark theme.*
+
+*Captured from the prototype running locally, with five medications added from the demo catalog
+(warfarin, aspirin, simvastatin, clarithromycin, amiodarone). All interaction content is the curated
+demo dataset — not a live drug database and not clinical advice. Run it yourself — see **Demo**
+below — it takes under a minute.*
 
 ## Architecture
 
