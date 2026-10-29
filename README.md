@@ -1,5 +1,7 @@
 # MediSync AI
 
+**Check a full medication list for drug–drug interactions and see the severity, mechanism, safer alternatives and evidence behind every flag.**
+
 An AI-assisted drug interaction and clinical decision support workspace —
 **portfolio prototype, demo data only.**
 
@@ -55,6 +57,10 @@ touching the UI. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 | Patient profile (physiological context) |
 |---|
 | ![Patient profile form for age, weight, eGFR, hepatic impairment and allergies](docs/screenshots/patient-profile.png) |
+
+| Mobile | Dark theme |
+|---|---|
+| <img src="docs/screenshots/mobile.png" alt="Dashboard on a phone-sized screen" width="260"> | ![Dashboard in dark theme](docs/screenshots/dashboard-dark.png) |
 
 *Captured from the prototype running locally, with five medications added from the demo catalog
 (warfarin, aspirin, simvastatin, clarithromycin, amiodarone). All interaction content is the curated
