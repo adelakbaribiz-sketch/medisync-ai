@@ -40,6 +40,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      // THEME_INIT_SCRIPT toggles the `dark` class before hydration, so the
+      // client className can legitimately differ from the server's.
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
